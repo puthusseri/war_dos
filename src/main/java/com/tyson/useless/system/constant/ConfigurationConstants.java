@@ -6,5 +6,6 @@ public class ConfigurationConstants {
     public static final String USER_NAME = "admin@admin.in";
     public static final String PASSWORD = "Temp123";
     public static final int MAX_HEAP_SIZE = 90;
+    public static final String SERIALIZED_NUMBER = "dGhpcyBpcyBhIHNpbWVwbGUgY29u";
 
 }
