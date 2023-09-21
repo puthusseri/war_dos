@@ -19,11 +19,9 @@ public class MemoryUsageScheduledTask {
 
     @Scheduled(fixedRate = 3000) // 3 seconds
     public ResponseEntity<String> checkMemoryUsage() {
-        System.out.println("Scheduler is running ...");
         if (MemoryUsageChecker.isMemoryUsageFull()) {
             return new ResponseEntity<>("Tyson is sleeping", HttpStatus.BAD_GATEWAY);
         }
-
         return null;
     }
 }

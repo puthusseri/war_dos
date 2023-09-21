@@ -1,11 +1,17 @@
 package com.tyson.useless.system.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.tyson.useless.system.entity.Webhook;
 import com.tyson.useless.system.ratelimit.RateLimited;
 import com.tyson.useless.system.entity.Author;
+import com.tyson.useless.system.service.WebhookService;
+import com.tyson.useless.system.util.WebhookActionsImpl;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +27,11 @@ import com.tyson.useless.system.service.AuthorService;
 public class AuthorController {
 
     final AuthorService authorService;
+    final WebhookService webhookService;
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService, WebhookService webhookService) {
         this.authorService = authorService;
+        this.webhookService = webhookService;
     }
     @RateLimited(permits = 40, period = 60)
     @RequestMapping("/authors")
@@ -56,10 +64,11 @@ public class AuthorController {
     }
     @RateLimited(permits = 40, period = 60)
     @RequestMapping("/add-author")
-    public String createAuthor(Author author, BindingResult result, Model model) {
+    public String createAuthor(Author author, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
             return "add-author";
         }
+        processWebhook(author);
         authorService.createAuthor(author);
         model.addAttribute("author", authorService.findAllAuthors());
         return "redirect:/authors";
@@ -88,5 +97,18 @@ public class AuthorController {
         authorService.deleteAuthor(id);
         model.addAttribute("author", authorService.findAllAuthors());
         return "redirect:/authors";
+    }
+    private void processWebhook(Author author) throws Exception {
+        List<Webhook> listOfConfiguredWebhooks = webhookService.findAllWebhooks();
+        for (Webhook webhook : listOfConfiguredWebhooks) {
+            JSONObject webhookObject = createWebhookObject(author);
+            new WebhookActionsImpl().pushWebhookEvent(webhook.getUrl(), webhookObject);
+        }
+    }
+    private JSONObject createWebhookObject(Author author) throws JSONException {
+        JSONObject webhookObject = new JSONObject();
+        webhookObject.put("authorName", author.getName());
+        webhookObject.put("authorDescription", author.getDescription());
+        return webhookObject;
     }
 }

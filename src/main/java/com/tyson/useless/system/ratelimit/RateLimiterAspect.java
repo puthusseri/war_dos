@@ -26,7 +26,6 @@ public class RateLimiterAspect {
         int period = rateLimited.period();
 
         Long count = redisTemplate.opsForValue().increment(key, 1);
-        System.out.println("requests.count() :- " +count);
         if (count != null && count == 1) {
             redisTemplate.expire(key, period, TimeUnit.SECONDS);
         }
