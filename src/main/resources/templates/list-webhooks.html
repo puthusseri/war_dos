@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>All Webhooks</title>
+
+    <meta url="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+
+</head>
+<body>
+<div th:insert="comman/header :: header"></div>
+<div class="container my-2">
+
+    <div th:switch="${webhooks}" class="container my-5">
+        <p class="my-5">
+            <a href="/addWebhook" class="btn btn-dark"> <i
+                    class="fas fa-user-plus ml-2"> Add Webhook </i></a>
+
+        </p>
+        <div class="col-md-12">
+            <h2 th:case="null">No record found !!</h2>
+            <div th:case="*">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Webhook Url</th>
+                        <ul>
+                            <li>Valid webhook should return 200 status code</li>
+                            <li>Valid webhook should be fast</li>
+                            <li>Valid webhook should have a valid url</li>
+                        </ul>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="webhook : ${webhooks}">
+                        <td th:text="${webhook.url}"></td>
+                        <td><a
+                                th:href="@{/remove-webhook/{id}(id=${webhook.id})}"
+                                class="btn btn-danger"><i class="fas fa-user-times ml-2"></i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="comman/footer :: footer"></div>
+</body>
+
+</html>
