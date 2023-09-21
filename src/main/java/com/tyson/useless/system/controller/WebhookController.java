@@ -3,7 +3,7 @@ package com.tyson.useless.system.controller;
 import com.tyson.useless.system.entity.Webhook;
 import com.tyson.useless.system.ratelimit.RateLimited;
 import com.tyson.useless.system.service.WebhookService;
-import com.tyson.useless.system.util.WebhookActions;
+import com.tyson.useless.system.util.WebhookActionsImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +47,7 @@ public class WebhookController {
 	@RequestMapping("/add-webhook")
 	public String createWebhook(Webhook webhook, BindingResult result, Model model) throws IOException {
 		List<Webhook> listOfWehbooks =  webhookService.findAllWebhooks();
-		boolean isValidWebhook = new WebhookActions().pingWebhook(webhook.getUrl());
+		boolean isValidWebhook = new WebhookActionsImpl().pingWebhook(webhook.getUrl());
 		if (result.hasErrors() || listOfWehbooks.size() > 2 || !isValidWebhook) {
 			return "bad-webhook";
 		}

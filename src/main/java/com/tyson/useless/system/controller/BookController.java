@@ -1,7 +1,6 @@
 package com.tyson.useless.system.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -12,7 +11,7 @@ import com.tyson.useless.system.entity.Category;
 import com.tyson.useless.system.entity.Webhook;
 import com.tyson.useless.system.ratelimit.RateLimited;
 import com.tyson.useless.system.service.*;
-import com.tyson.useless.system.util.WebhookActions;
+import com.tyson.useless.system.util.WebhookActionsImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
@@ -82,7 +81,7 @@ public class BookController {
 	}
 	@RateLimited(permits = 40, period = 60)
 	@RequestMapping("/add-book")
-	public String createBook(Book book, BindingResult result, Model model) throws JSONException, IOException {
+	public String createBook(Book book, BindingResult result, Model model) throws Exception {
 		if (result.hasErrors()) {
 			return "add-book";
 		}
@@ -102,7 +101,7 @@ public class BookController {
 			for(Author author:authors){
 				webhookObject.put("authorName", author.getName());
 			}
-			new WebhookActions().pushWebhookEvent(webhook.getUrl(), webhookObject);
+			new WebhookActionsImpl().pushWebhookEvent(webhook.getUrl(), webhookObject);
 		}
 		bookService.createBook(book);
 		model.addAttribute("book", bookService.findAllBooks());
@@ -111,16 +110,6 @@ public class BookController {
 
 	@GetMapping("/update/{id}")
 	public String showUpdateForm(@PathVariable("id") Long id, Model model) throws InterruptedException {
-
-		// TODO : Remove the below loop
-//		ArrayList<Book> dummyBooks = new ArrayList<>();
-//		int i = 0;
-//		while(true){
-//			dummyBooks.add(new Book());
-//			if(i == 1){
-//				break;
-//			}
-//		}
 		model.addAttribute("book", bookService.findBookById(id));
 		return "update-book";
 	}
