@@ -70,5 +70,5 @@ public class PublisherController {
 		publisherService.deletePublisher(id);
 		model.addAttribute("publisher", publisherService.findAllPublishers());
 		return "redirect:/publishers";
-	}s
+	}
 }
