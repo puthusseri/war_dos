@@ -8,10 +8,10 @@
 		<relativePath />
 	</parent>
 	<groupId>com.quickstartdev</groupId>
-	<artifactId>librarymanagementsystem</artifactId>
+	<artifactId>uselesssystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>librarymanagementsystem</name>
-	<description>Library management system </description>
+	<name>uselesssystem</name>
+	<description>Useless system </description>
 
 	<properties>
 		<java.version>17</java.version>
