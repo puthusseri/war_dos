@@ -83,7 +83,7 @@ public class BookController {
         return "add-book";
     }
 
-    @RateLimited(permits = 40, period = 60)
+    @RateLimited(permits = 20, period = 60)
     @RequestMapping("/add-book")
     public String createBook(Book book, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {

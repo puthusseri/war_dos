@@ -46,7 +46,7 @@ public class PublisherController {
 	public String showCreateForm(Publisher publisher) {
 		return "add-publisher";
 	}
-	@RateLimited(permits = 40, period = 60)
+	@RateLimited(permits = 20, period = 60)
 	@RequestMapping("/add-publisher")
 	public String createPublisher(Publisher publisher, BindingResult result, Model model) throws Exception {
 		if (result.hasErrors()) {

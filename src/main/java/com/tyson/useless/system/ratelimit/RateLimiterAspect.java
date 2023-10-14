@@ -25,7 +25,7 @@ public class RateLimiterAspect {
         int permits = rateLimited.permits();
         int period = rateLimited.period();
 
-        Long count = redisTemplate.opsForValue().increment(key, 1);
+        Long count = redisTemplate.opsForValue().increment(key);
         if (count != null && count == 1) {
             redisTemplate.expire(key, period, TimeUnit.SECONDS);
         }
@@ -34,7 +34,7 @@ public class RateLimiterAspect {
             try {
                 return joinPoint.proceed();
             } finally {
-                redisTemplate.opsForValue().decrement(key, 1);
+//                redisTemplate.opsForValue().decrement(key, 1);
             }
         } else {
             throw new RateLimitExceededException("Rate limit exceeded", HttpStatus.TOO_MANY_REQUESTS.value());

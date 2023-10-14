@@ -43,7 +43,7 @@ public class CategoryController {
 	public String showCreateForm(Category category) {
 		return "add-category";
 	}
-	@RateLimited(permits = 40, period = 60)
+	@RateLimited(permits = 20, period = 60)
 	@RequestMapping("/add-category")
 	public String createCategory(Category category, BindingResult result, Model model) throws Exception {
 		if (result.hasErrors()) {

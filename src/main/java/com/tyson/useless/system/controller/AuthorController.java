@@ -62,7 +62,7 @@ public class AuthorController {
     public String showCreateForm(Author author) {
         return "add-author";
     }
-    @RateLimited(permits = 40, period = 60)
+    @RateLimited(permits = 20, period = 60)
     @RequestMapping("/add-author")
     public String createAuthor(Author author, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
