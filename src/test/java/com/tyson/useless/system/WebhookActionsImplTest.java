@@ -54,9 +54,18 @@ public class WebhookActionsImplTest {
         assertThrows(IOException.class, () -> webhookActions.pushWebhookEvent(invalidURL, eventData));
     }
 
+    @Test
+    public void testPushWebhookEvent_ValidPOSTURL_ShouldReturnData() throws Exception {
+        WebhookActionsImpl webhookActions = new WebhookActionsImpl();
+        String invalidURL = "https://tyson.requestcatcher.com/validPostURL";
+        JSONObject eventData = new JSONObject("{\"key\": \"value\"}");
+        String responseData = webhookActions.pushWebhookEvent(invalidURL, eventData);
+        assertEquals(responseData, "request caught");
+    }
+
 
     @Test
-    public void pushWebhookEvent_validPostUrl_shouldGiveResponse() throws JSONException, IOException {
+    public void pushWebhookEvent_validDOSPostUrl_shouldNotThrowOutOfMemeoryException() throws JSONException, IOException {
         // TODO : change the below url
         String validURL = "http://127.0.0.1:5000/tys";
         WebhookActionsImpl webhookActions = new WebhookActionsImpl();

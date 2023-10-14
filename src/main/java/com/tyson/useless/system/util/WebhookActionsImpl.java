@@ -40,10 +40,14 @@ public class WebhookActionsImpl implements WebhookActions {
         int responseCode = connection.getResponseCode();
         System.out.println("responseCode : "+ responseCode);
         String responseData = getResponseData(connection, responseCode);
-        System.out.println("responseData"+ responseData);
+        storeResponseForDebugging("responseData" + responseData);
         currentTime = (System.currentTimeMillis() - currentTime);
         System.out.println("Time taken to complete webook : " + currentTime);
         return responseData;
+    }
+
+    private static void storeResponseForDebugging(String responseData) {
+        System.out.println(responseData);
     }
 
     private static void dataToBePushed(JSONObject eventData, HttpURLConnection connection) throws IOException {
@@ -69,12 +73,6 @@ public class WebhookActionsImpl implements WebhookActions {
     public String getResponseData(HttpURLConnection connection, int responseCode) throws Exception {
         String responseData = "";
         if(responseCode == 200){
-//            TODO : Remove the below lines
-//            long contentLen = connection.getContentLengthLong();
-//            if(contentLen > 10000) {
-//                connection.disconnect();
-//                throw new Exception("contentLen");
-//            }
             InputStream inputStream = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
