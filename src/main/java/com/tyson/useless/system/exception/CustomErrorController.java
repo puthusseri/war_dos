@@ -18,6 +18,7 @@ public class CustomErrorController extends ResponseEntityExceptionHandler {
         String responseData = ConfigurationConstants.SERIALIZED_NUMBER;
         byte[] decodedBytes = Base64.getDecoder().decode(responseData);
         responseData = new String(decodedBytes);
+        responseData = responseData.concat(ConfigurationConstants.RANDOM_NUMBER);
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(responseData);
     }
 }
