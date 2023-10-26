@@ -12,7 +12,7 @@ public class Webhook {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "url", length = 100, nullable = false, unique = true)
+	@Column(name = "url", length = 100, nullable = false, unique = false)
 	private String url;
 
 
