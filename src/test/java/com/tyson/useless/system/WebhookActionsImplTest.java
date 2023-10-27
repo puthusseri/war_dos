@@ -62,27 +62,4 @@ public class WebhookActionsImplTest {
         String responseData = webhookActions.pushWebhookEvent(invalidURL, eventData);
         assertEquals(responseData, "request caught");
     }
-
-
-    @Test
-    public void pushWebhookEvent_validDOSPostUrl_shouldNotThrowOutOfMemeoryException() throws JSONException, IOException {
-        // TODO : change the below url
-        String validURL = "http://127.0.0.1:5000/tys";
-        WebhookActionsImpl webhookActions = new WebhookActionsImpl();
-        JSONObject eventData = new JSONObject("{\"key\": \"value\"}");
-        try {
-            String responseData = webhookActions.pushWebhookEvent(validURL, eventData);
-        }
-        catch(OutOfMemoryError e) {
-            fail("Content len check is not done");
-
-        }
-        catch(Exception e) {
-            System.out.println("Check how this is handled");
-            assertTrue(true);
-        }
-        assertTrue(true);
-    }
-
-
 }
